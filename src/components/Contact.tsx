@@ -10,18 +10,42 @@ export function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simula envio - aqui você pode integrar com sua API
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    console.log("Dados do formulário:", formData);
-    setSubmitted(true);
-    setIsSubmitting(false);
-    setFormData({ nome: "", telefone: "", email: "" });
+    setError(null);
+
+    try {
+      // Envia dados para o RD Station CRM
+      const response = await fetch("/api/rdcrm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Erro ao enviar formulário");
+      }
+
+      console.log("Lead cadastrado no RD CRM:", result);
+      setSubmitted(true);
+      setFormData({ nome: "", telefone: "", email: "" });
+    } catch (err) {
+      console.error("Erro ao enviar formulário:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Ocorreu um erro. Tente novamente."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const formatPhone = (value: string) => {
@@ -177,7 +201,10 @@ export function Contact() {
                   Em breve entraremos em contato com você.
                 </p>
                 <button
-                  onClick={() => setSubmitted(false)}
+                  onClick={() => {
+                    setSubmitted(false);
+                    setError(null);
+                  }}
                   className="text-orange-primary hover:text-yellow-primary transition-colors"
                 >
                   Enviar outra mensagem
@@ -188,6 +215,14 @@ export function Contact() {
                 <h3 className="text-text-light font-semibold text-lg sm:text-xl mb-6">
                   Agende sua aula experimental
                 </h3>
+
+                {/* Mensagem de erro */}
+                {error && (
+                  <div className="mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                    <p className="text-red-400 text-sm">{error}</p>
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                   <div>
                     <label

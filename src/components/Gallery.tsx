@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 
 const images = [
-  { src: "/foto-familia.jpg", alt: "Família Porrada Terapia" },
-  { src: "/foto-evento.jpg", alt: "Evento de Muay Thai" },
-  { src: "/foto-treino-grupo.jpg", alt: "Treino em grupo" },
-  { src: "/foto-equipamentos.jpg", alt: "Equipamentos" },
+  { src: "/banner/foto-familia.webp", alt: "Família Porrada Terapia" },
+  { src: "/photo/foto-evento.webp", alt: "Evento de Muay Thai" },
+  { src: "/photo/foto-treino-grupo.jpg", alt: "Treino em grupo" },
+  { src: "/photo/foto-equipamentos.jpg", alt: "Equipamentos" },
 ];
 
 export function Gallery() {

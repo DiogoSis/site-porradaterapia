@@ -10,7 +10,7 @@ export function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/banner-aula-experimental.jpg"
+          src="/banner/banner-aula-experimental.webp"
           alt="Treino de Muay Thai"
           fill
           className="object-cover object-center"

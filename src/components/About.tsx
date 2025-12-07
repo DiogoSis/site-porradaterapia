@@ -9,7 +9,7 @@ export function About() {
           <div className="relative">
             <div className="relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden">
               <Image
-                src="/foto-treinador.jpg"
+                src="/photo/foto-treinador.jpg"
                 alt="Treinador Porrada Terapia"
                 fill
                 className="object-cover"

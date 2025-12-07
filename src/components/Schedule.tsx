@@ -234,7 +234,7 @@ export function Schedule() {
         {/* Image */}
         <div className="relative aspect-[21/9] rounded-xl sm:rounded-2xl overflow-hidden">
           <Image
-            src="/banner-horizontal.jpg"
+            src="/banner/banner-horizontal.jpg"
             alt="CT Porrada Terapia"
             fill
             className="object-cover"
