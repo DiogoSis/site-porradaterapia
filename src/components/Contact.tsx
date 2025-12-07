@@ -2,6 +2,9 @@
 
 import { useState, FormEvent } from "react";
 
+// Número do WhatsApp do CT Porrada Terapia (com código do país)
+const WHATSAPP_NUMBER = "5521990760880";
+
 export function Contact() {
   const [formData, setFormData] = useState({
     nome: "",
@@ -12,10 +15,20 @@ export function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Gera a URL do WhatsApp com a mensagem personalizada
+  const generateWhatsAppUrl = (nome: string) => {
+    const message = `Olá! Eu me chamo ${nome}, quero agendar uma aula experimental.`;
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
+
+    // Salva o nome antes de limpar o formulário
+    const nomeParaWhatsApp = formData.nome;
 
     try {
       // Envia dados para o RD Station CRM
@@ -34,16 +47,20 @@ export function Contact() {
       }
 
       console.log("Lead cadastrado no RD CRM:", result);
-      setSubmitted(true);
-      setFormData({ nome: "", telefone: "", email: "" });
     } catch (err) {
       console.error("Erro ao enviar formulário:", err);
       setError(
         err instanceof Error
           ? err.message
-          : "Ocorreu um erro. Tente novamente."
+          : "Ocorreu um erro ao salvar no CRM, mas você será redirecionado para o WhatsApp."
       );
     } finally {
+      // Sempre abre o WhatsApp, independente de sucesso ou erro no CRM
+      const whatsappUrl = generateWhatsAppUrl(nomeParaWhatsApp);
+      window.open(whatsappUrl, "_blank");
+      
+      setSubmitted(true);
+      setFormData({ nome: "", telefone: "", email: "" });
       setIsSubmitting(false);
     }
   };
